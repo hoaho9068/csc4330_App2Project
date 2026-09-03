@@ -137,7 +137,7 @@ class _GameOverlay extends StatelessWidget {
       listenable: gameState,
       builder: (context, _) {
         if (gameState.status == GameStatus.playing) {
-          return const SizedBox.shrink();
+          return const Positioned.fill(child: SizedBox.shrink());
         }
         final won = gameState.status == GameStatus.won;
         return Positioned.fill(
