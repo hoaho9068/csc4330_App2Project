@@ -26,4 +26,13 @@ class GameConfig {
 
   static const int initialLives = 3;
   static const double maxDt = 0.05;
+
+  // --- Diving invaders ---
+  // These are bonus invaders that periodically spawn at the top of the
+  // arena and fall straight down, disappearing once they pass the bottom
+  // edge of the screen (whether or not the player shoots them first).
+  static const double divingInvaderSpeed = 90;
+  static const double divingInvaderMinInterval = 2.5;
+  static const double divingInvaderMaxInterval = 5.5;
+  static const int divingInvaderPoints = 50;
 }

@@ -16,6 +16,11 @@ class GameState extends ChangeNotifier {
   final List<Invader> invaders = [];
   final List<Bullet> bullets = [];
 
+  // Bonus invaders that drop from the top of the arena straight down and
+  // disappear once they pass the bottom edge. Kept separate from the main
+  // `invaders` grid so they don't affect the win/game-over conditions.
+  final List<Invader> divingInvaders = [];
+
   int score = 0;
   int lives = GameConfig.initialLives;
   GameStatus status = GameStatus.playing;
@@ -24,6 +29,7 @@ class GameState extends ChangeNotifier {
   double _invaderSpeed = GameConfig.baseInvaderSpeed;
   double _playerFireCooldown = GameConfig.playerFireInterval;
   double _invaderFireCooldown = 1.0;
+  double _divingSpawnCooldown = GameConfig.divingInvaderMinInterval;
   final Random _random = Random();
 
   bool get _initialized => _arenaSize != Size.zero;
@@ -42,7 +48,9 @@ class GameState extends ChangeNotifier {
     _invaderSpeed = GameConfig.baseInvaderSpeed;
     _playerFireCooldown = GameConfig.playerFireInterval;
     _invaderFireCooldown = 1.0;
+    _divingSpawnCooldown = GameConfig.divingInvaderMinInterval;
     bullets.clear();
+    divingInvaders.clear();
     _buildLevel();
     notifyListeners();
   }
@@ -82,6 +90,7 @@ class GameState extends ChangeNotifier {
     _updatePlayerFire(dt);
     _updateInvaders(dt);
     _updateInvaderFire(dt);
+    _updateDivingInvaders(dt);
     _updateBullets(dt);
     _handleCollisions();
     _checkEndConditions();
@@ -124,6 +133,35 @@ class GameState extends ChangeNotifier {
         (GameConfig.maxInvaderSpeed - GameConfig.baseInvaderSpeed) * killedFraction;
   }
 
+  // Spawns bonus invaders at the top of the arena at random intervals and
+  // advances any that are currently falling. Each one moves straight down
+  // and is removed once it drops past the bottom edge of the screen.
+  void _updateDivingInvaders(double dt) {
+    _divingSpawnCooldown -= dt;
+    if (_divingSpawnCooldown <= 0) {
+      final spawnX = GameConfig.arenaMargin +
+          _random.nextDouble() *
+              (_arenaSize.width - GameConfig.arenaMargin * 2 - GameConfig.invaderWidth);
+      divingInvaders.add(Invader(
+        col: -1,
+        row: -1,
+        x: spawnX,
+        y: -GameConfig.invaderHeight,
+        type: InvaderType.octopus,
+      ));
+      _divingSpawnCooldown = GameConfig.divingInvaderMinInterval +
+          _random.nextDouble() *
+              (GameConfig.divingInvaderMaxInterval - GameConfig.divingInvaderMinInterval);
+    }
+
+    for (final diver in divingInvaders) {
+      diver.y += GameConfig.divingInvaderSpeed * dt;
+    }
+
+    // Hide/disappear once fully past the bottom of the screen.
+    divingInvaders.removeWhere((diver) => diver.y > _arenaSize.height);
+  }
+
   void _updateInvaderFire(double dt) {
     _invaderFireCooldown -= dt;
     if (_invaderFireCooldown <= 0) {
@@ -156,6 +194,13 @@ class GameState extends ChangeNotifier {
           if (inv.alive && inv.rect.overlaps(bullet.rect)) {
             inv.alive = false;
             score += inv.points;
+            return true;
+          }
+        }
+        for (final diver in divingInvaders) {
+          if (diver.rect.overlaps(bullet.rect)) {
+            divingInvaders.remove(diver);
+            score += GameConfig.divingInvaderPoints;
             return true;
           }
         }

@@ -11,6 +11,7 @@ class GamePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final invaderPaint = Paint()..color = Colors.greenAccent;
+    final divingInvaderPaint = Paint()..color = Colors.orangeAccent;
     final playerPaint = Paint()..color = Colors.lightBlueAccent;
     final playerBulletPaint = Paint()..color = Colors.white;
     final invaderBulletPaint = Paint()..color = Colors.redAccent;
@@ -19,6 +20,13 @@ class GamePainter extends CustomPainter {
       if (invader.alive) {
         canvas.drawRect(invader.rect, invaderPaint);
       }
+    }
+
+    // Bonus invaders that fall from the top of the screen and disappear
+    // once they pass the bottom edge. Drawn in a distinct color so they
+    // read as a different, "diving" enemy type.
+    for (final diver in gameState.divingInvaders) {
+      canvas.drawRect(diver.rect, divingInvaderPaint);
     }
 
     canvas.drawRect(gameState.player.rect, playerPaint);
