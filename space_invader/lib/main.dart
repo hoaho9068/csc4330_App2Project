@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/game_screen.dart';
+import 'screens/menu_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: Colors.black,
       ),
-      home: const GameScreen(),
+      home: const MenuScreen(),
     );
   }
 }

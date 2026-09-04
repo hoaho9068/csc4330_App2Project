@@ -1,10 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:space_invader/main.dart';
+import 'package:space_invader/screens/game_screen.dart';
 
 void main() {
-  testWidgets('Game waits for player input before advancing', (WidgetTester tester) async {
+  testWidgets('Menu shows Play, Leaderboard, and Profile', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pump();
+
+    expect(find.text('Play'), findsOneWidget);
+    expect(find.text('Leaderboard'), findsOneWidget);
+    expect(find.text('Profile'), findsOneWidget);
+  });
+
+  testWidgets('Game waits for player input before advancing', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: GameScreen()));
     await tester.pump();
 
     expect(find.text('Drag to start'), findsOneWidget);
