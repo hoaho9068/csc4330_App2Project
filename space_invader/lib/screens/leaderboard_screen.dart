@@ -16,7 +16,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Leaderboard')),
+      appBar: AppBar(),
       body: FutureBuilder<List<LeaderboardEntry>>(
         future: _entries,
         builder: (context, snapshot) {

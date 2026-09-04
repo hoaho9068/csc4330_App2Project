@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final stats = _stats;
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(),
       body: stats == null
           ? const Center(child: CircularProgressIndicator())
           : Padding(
