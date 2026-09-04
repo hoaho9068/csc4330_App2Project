@@ -1,12 +1,17 @@
 class GameConfig {
   static const int rows = 5;
-  static const int cols = 8;
+  static const int cols = 4;
 
   static const double invaderWidth = 24;
   static const double invaderHeight = 16;
   static const double invaderSpacing = 12;
   static const double arenaMargin = 16;
-  static const double stepDown = 14;
+  static const double stepDown = 8;
+
+  // The main invader formation trickles in over time rather than appearing
+  // all at once; each new invader spawns after a random delay in this range.
+  static const double gridSpawnMinInterval = 0.15;
+  static const double gridSpawnMaxInterval = 0.45;
 
   static const double baseInvaderSpeed = 40;
   static const double maxInvaderSpeed = 220;
@@ -35,4 +40,20 @@ class GameConfig {
   static const double divingInvaderMinInterval = 2.5;
   static const double divingInvaderMaxInterval = 5.5;
   static const int divingInvaderPoints = 50;
+
+  // --- Wave progression ---
+  // Waves are capped, not endless — clearing maxWave ends the game with the
+  // existing "You Win!" screen instead of starting another wave.
+  static const int maxWave = 5;
+
+  static const double waveSpeedIncrement = 15.0;
+  static const double invaderSpeedCap = 320.0;
+
+  static const double waveFireIntervalScale = 0.88;
+  static const double minInvaderFireInterval = 0.18;
+
+  static const double waveDivingIntervalScale = 0.88;
+  static const double minDivingInterval = 1.0;
+  static const double waveDivingSpeedIncrement = 12.0;
+  static const double divingInvaderSpeedCap = 180.0;
 }

@@ -19,6 +19,12 @@ class Invader {
   double y;
   bool alive = true;
   final InvaderType type;
+
+  // Each invader in the main formation bounces off the arena margins on its
+  // own (see GameState._updateInvaders), independently of the rest of the
+  // scattered formation, so a spread-out swarm doesn't destabilize a
+  // shared bounding-box check. Unused by diving invaders.
+  int direction = 1;
   final double width = GameConfig.invaderWidth;
   final double height = GameConfig.invaderHeight;
 

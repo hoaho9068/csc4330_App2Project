@@ -116,6 +116,10 @@ class _Hud extends StatelessWidget {
               style: const TextStyle(color: Colors.white, fontSize: 18),
             ),
             Text(
+              'Wave: ${gameState.wave}',
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            Text(
               'Lives: ${gameState.lives}',
               style: const TextStyle(color: Colors.white, fontSize: 18),
             ),

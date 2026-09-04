@@ -9,6 +9,7 @@ void main() {
 
     expect(find.text('Drag to start'), findsOneWidget);
     expect(find.textContaining('Score'), findsOneWidget);
+    expect(find.text('Wave: 1'), findsOneWidget);
     expect(find.textContaining('Lives'), findsOneWidget);
 
     // Without any input, the game must stay paused indefinitely rather than
